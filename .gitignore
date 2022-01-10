@@ -1,0 +1,5 @@
+Untitled.ipynb
+*.jpeg
+venv/
+*venv/
+.ipynb_checkpoints/

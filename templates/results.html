@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main.css') }}">
+    <title>{{symbol}}</title>
+    
+    
+    
+    
+</head>
+
+
+<body display='flex'>
+    <h1>{{symbol}}</h1>
+    <h1>{{last}}</h1>
+    <a><b>{{ parameters }}</b></a>
+
+    <div id="parameters" class="paramSettings">
+     <form action="/resultsParams" method="post">
+        <input type="text" id="MaxNLines" name="nlines" placeholder="max number of lines ({{nlines}})">
+        <input type="text" id="Ncomponents" name="ncomponents" placeholder="n components {{ncomponents}}">
+        <input type="text" id="minAngle" name="min_angle" placeholder="min angle {{minangle}}">
+        <button type="submit">Set</button>
+
+     </form>
+    </div>
+
+    <div class="card-plot1" id='card1'>
+        <div id='plot1' class='plot-area'>
+            <!-- <canvas class=plot11 id=test> -->
+                <div id='chart' class='chart' ></div>
+                test
+            <!-- </canvas> -->
+            
+                
+            </div>
+        </div>
+    </div>
+    <img src="static/imgs/fig1.jpeg" >
+      
+      
+
+</body>
+
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+<script type='text/javascript'>
+    var graphs = {{graphJSON | safe}};
+    const config = {
+    displayModeBar: false, // this is the line that hides the bar.
+    };
+    Plotly.plot('chart',graphs,config,{});
+</script>
+
+<!-- Auto reload page on window resize -->
+<!-- <script> 
+window.addEventListener('resize', function () { 
+    // "use strict";
+    window.location.reload('/results'); 
+});
+</script> -->
+
+
+</html>

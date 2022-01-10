@@ -1,0 +1,52 @@
+/* /* div.chart {
+  padding: 10px 0 30px 0;
+  background-color: #E6E6FA;
+  -webkit-border-radius: 6px;
+     -moz-border-radius: 6px;
+          border-radius: 6px;
+} */
+
+/* body{
+  /* width: 90%; */
+  margin-left: 5%;
+  margin-right: 5%;} */
+
+div.paramSettings{
+  display: flex;
+}
+
+img.card-plot1{
+  /* width:'900px';
+  height:'800px'; */
+  display: 'flex';
+  max-width: 90%;
+  max-height: 50%;
+  margin-left: 5%; 
+  margin-right: 5%; 
+  justify-content: center;
+
+}
+
+div.search-symbols{
+  position: absolute;
+    top: 30%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -50px;
+    width: 100px;
+    height: 100px;
+}
+
+
+/* div.plot-area{
+  display:flex;
+  
+  background-color: red;
+  
+} */
+
+/* div.chart{
+  display:flex;
+  justify-content: middle;
+  background-color: red;
+} */
