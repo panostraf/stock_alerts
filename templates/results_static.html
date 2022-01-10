@@ -1,6 +1,8 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
-<head>
+<head> -->
+    {% extends 'navbar.html' %}
+    {% block content%}
     <meta charset="UTF-8">
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main.css') }}">
     <title>{{symbol}}</title>
@@ -8,10 +10,10 @@
     
     
     
-</head>
+<!-- </head> -->
 
 
-<body display='flex'>
+<div display='flex'>
     <h1>{{symbol}}</h1>
     <h1>{{last}}</h1>
     <a><b>{{ parameters }}</b></a>
@@ -33,8 +35,9 @@
       
       
 
-</body>
+</div>
 
+{% endblock %}
 
 
 <!-- Auto reload page on window resize -->
@@ -46,4 +49,4 @@ window.addEventListener('resize', function () {
 </script> -->
 
 
-</html>
+<!-- </html> -->

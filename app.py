@@ -27,8 +27,29 @@ def home():
                             symbols=symbols["name"])
 
 
-@app.route("/results",methods=["GET","POST"])
-def results():
+@app.route("/results/<symbol>",methods=["GET","POST"])
+def results(symbol):
+    
+    nlines = 2
+    ncomponents = 4
+    minangle = 0.005
+    fig,last  = trends.main(str(symbol))
+    graphJSON =  json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    # print(graphJSON)
+    fig.write_image("static/imgs/fig1.jpeg")
+    symbols = inv.crypto.get_cryptos()[:10]
+
+    return render_template("results.html",
+                                symbol=symbol,
+                                nlines=nlines,
+                                ncomponents=ncomponents,
+                                minangle=minangle,
+                                last = last,
+                                graphJSON=graphJSON,
+                                )
+
+@app.route("/search_results",methods=["GET","POST"])
+def search_results():
     if request.method=="POST":
         session['symbol'] = request.form['ticker']
         if session['symbol'] == "":
@@ -38,16 +59,19 @@ def results():
         minangle = 0.005
         fig,last  = trends.main(str(session['symbol']))
         graphJSON =  json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-        print(graphJSON)
+        # print(graphJSON)
         fig.write_image("static/imgs/fig1.jpeg")
+        symbols = inv.crypto.get_cryptos()[:10]
     
-    return render_template("results_static.html",
+
+    return render_template("results.html",
                                 symbol=session['symbol'],
                                 nlines=nlines,
                                 ncomponents=ncomponents,
                                 minangle=minangle,
                                 last = last,
-                                graphJSON=graphJSON)
+                                graphJSON=graphJSON,
+                                symbols=symbols["name"])
     
 
 
@@ -93,15 +117,17 @@ def trendParams():
         graphJSON =  json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
         print(minangle,nlines,ncomponents)
         fig.write_image("static/imgs/fig1.jpeg")
-        
-    return render_template("results_static.html",
+        fig.config()
+        symbols = inv.crypto.get_cryptos()[:10]
+    return render_template("results.html",
                             symbol=session['symbol'],
                             nlines=nlines,
                             ncomponents=ncomponents,
                             minangle=minangle,
                             last = last,
-                            graphJSON=graphJSON)
+                            graphJSON=graphJSON,
+                            symbols=symbols["name"])
 
 
 if __name__=='__main__':
-    app.run(debug=True)
+    app.run(debug=True,host="0.0.0.0",port="8080") 

@@ -89,13 +89,13 @@ def main(symbol,n=4,
     # style={'width':'100%',
     # 'height':'100%'}
     # ,
-    height=1080,
-    width=1920,
+    # height=1080,
+    # width=1920,
     margin=dict(
         l=50,
         r=50,
-        b=100,
-        t=100,
+        # b=100,
+        # t=100,
         # pad=4)
     )
     )
