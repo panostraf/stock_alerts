@@ -10,13 +10,13 @@ from data.get_data import get_data
 
 
 
-def main(symbol,n=4,
-    minAngle=0.005,
+def main(symbol,n=3,
+    minAngle=0.0005,
     maxnLines=2):
 
     df = get_data(str(symbol))
     original_df = df
-    print(float(df.Close[-1]))
+    #print(float(df.Close[-1]))
     last = float(df.Close[-1])
 
 
@@ -37,9 +37,12 @@ def main(symbol,n=4,
 
 
     linesXmin = Lines().getLinesFromMin(df,angle_threshold=minAngle,maxnlines = maxnLines)
-    linesXmax = Lines().getLinesFromMax(df,angle_threshold=minAngle,maxnlines = maxnLines)
-    # print(len(linesXmin))
-    # print(len(linesXmax))
+    try:
+        linesXmax = Lines().getLinesFromMax(df,angle_threshold=minAngle,maxnlines = maxnLines)
+    except:
+        linesXmax = pd.DataFrame()
+    # #print(len(linesXmin))
+    # #print(len(linesXmax))
 
     # fig = px.line(df, x="Date", y="Close")
 
@@ -111,11 +114,11 @@ def addLocalMinMaxLine(df,fig,n):
     
     
     df,color,local_maxs,local_mins,slope = Lines().getMinMaxLine(df,n)
-    print("...........111111111111111111")
-    print(df)
-    print("..............")
-    print("///////////22222222222222222")
-    print("||||||||||||||||")
+    #print("...........111111111111111111")
+    #print(df)
+    #print("..............")
+    #print("///////////22222222222222222")
+    #print("||||||||||||||||")
     fig.add_trace(go.Scatter(x=df.Date, y=df.line, name=f"test", line = dict(color='royalblue', width=1, dash='dash')))
     fig.add_trace(go.Scatter(x=df.Date, y=df.xmax, name=f"tops", mode = 'markers',fillcolor="red"))
     fig.add_trace(go.Scatter(x=df.Date, y=df.xmin, name=f"bottoms",  mode = 'markers',fillcolor="green"))
@@ -146,7 +149,7 @@ if __name__=="__main__":
     # API Data Pull
     # df = pd.read_csv("data2.csv")
     df = df[-120:]
-    print(df)
+    #print(df)
 
     #SET PARAMETERS
     n=4
@@ -165,16 +168,16 @@ if __name__=="__main__":
     df.drop("datePoint",axis=1,inplace=True)
     df.set_index("Date",inplace=True)
 
-    print(df)
+    #print(df)
     linesXmin = Lines().getLinesFromMin(df,angle_threshold=minAngle,maxnlines = maxnLines)
     linesXmax = Lines().getLinesFromMax(df,angle_threshold=minAngle,maxnlines = maxnLines)
-    # print(linesXmin)
-    # print(len(linesXmin))
-    # print(linesXmin['Date'])
+    # #print(linesXmin)
+    # #print(len(linesXmin))
+    # #print(linesXmin['Date'])
     
     
-    print(len(linesXmin))
-    print(len(linesXmax))
+    #print(len(linesXmin))
+    #print(len(linesXmax))
     # exit(-1)
     plt.plot(df.Date,df.Close)
     if len(linesXmin.index>0):
@@ -217,18 +220,18 @@ if __name__=="__main__":
         xlabels.append(d)
 
     plt.plot(df.Date,df.Close)
-    # print(df.columns)
+    # #print(df.columns)
     for i in range(len(linesXmin['Date'])):
-        # print(i)
-        # print(type(point1[0][i]))
-        # print(point1[0][i])
+        # #print(i)
+        # #print(type(point1[0][i]))
+        # #print(point1[0][i])
         x_values = [point1[0][i],point2[0][i]]
         y_values = [point1[1][i],point2[1][i]]
         
         plt.plot(x_values,y_values)
 
     # for i in range(len(linesXmax['Date'])):
-    #     # print(i)
+    #     # #print(i)
     #     x_values = [point1DOWN[0][i],point2DOWN[0][i]]
     #     y_values = [point1DOWN[1][i],point2DOWN[1][i]]
         

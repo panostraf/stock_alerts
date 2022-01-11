@@ -39,6 +39,9 @@ class Lines:
 
     def getLinesFromMin(self,df,angle_threshold=0.005,maxnlines=5):
         df.reset_index(inplace=True)
+        dates = df['Date']
+        dates=dates.reset_index()
+        # ##print(dates)
 
         # Keep only pairs with local minimum
         df = df[df.xmin.notnull()]
@@ -57,7 +60,6 @@ class Lines:
         # Filter duplicated dates from cartesian
         temp_data = temp_data[(temp_data['Date']) != (temp_data['Date2'])]
         
-    
 
         # Keep only upwards trend lines
         temp_data = temp_data[temp_data["xmin2"]>=temp_data['xmin']]
@@ -66,7 +68,7 @@ class Lines:
         # temp_data = temp_data[temp_data["Date"]<temp_data["Date2"]]
         temp_data.reset_index(inplace=True)
         temp_data.drop("index",axis=1,inplace=True)
-        df.reset_index(inplace=True)
+        # df.reset_index(inplace=True)
 
         temp_data['minimum'] = 0
 
@@ -75,8 +77,8 @@ class Lines:
             d1 = temp_data.Date.astype("datetime64").loc[i]
             d2 = temp_data.Date2.astype("datetime64").loc[i]
             minimum = np.min(df['Close'][(df['Date'].astype("datetime64")>=d1) & (df['Date'].astype("datetime64")<=d2)])
-            # print(minimum)
-            # print(d1,d2,minimum)
+            # ##print(minimum)
+            # ##print(d1,d2,minimum)
             temp_data["minimum"].loc[i] = minimum
 
         temp_data.dropna(inplace=True)
@@ -85,7 +87,7 @@ class Lines:
         temp_data = temp_data[(temp_data['minimum'])>=(temp_data['xmin'])]
 
         temp_data_group = temp_data.groupby("xmin2").count()['Date']
-        # print(temp_data_group)
+        # ##print(temp_data_group)
         # Count how strong each line is
         temp_data = temp_data.merge(temp_data_group,
                                     left_on="xmin2",
@@ -97,16 +99,35 @@ class Lines:
 
         # use n of days to define the longest trends
         temp_data['days'] = temp_data['Date2'].astype("datetime64") - temp_data['Date'].astype("datetime64")
+
+
         
+        # Use date points instead of dates to calculate slopes
+        temp_data2 = temp_data.merge(dates,left_on='Date',right_on="Date",how="inner")
+        temp_data2.rename(columns={"index":"DateIndex"},inplace=True)
+        temp_data2 = temp_data2.merge(dates,left_on='Date2',right_on="Date",how="inner")
+        temp_data2.rename(columns={"index":"DateIndex2"},inplace=True)
+        temp_data2.drop('Date_y',axis=1,inplace=True)
+        temp_data2.rename(columns={'Date_x':'Date'},inplace=True)
+        temp_data=temp_data2
+        del temp_data2
+
+
         # Find slope for each line
         temp_data.Date = temp_data.Date.astype("str")
         temp_data.Date2 = temp_data.Date2.astype("str")
-        temp_data['slope'] = temp_data.apply(lambda x: get_slope([x["Date"],x["Date2"]],[x['xmin'],x['xmin2']]),axis=1)
+        ##print(temp_data)
+        temp_slope_intercept= pd.DataFrame.from_records((temp_data.apply(lambda x: get_slope([x["DateIndex"],x["DateIndex2"]],[x['xmin'],x['xmin2']]),axis=1)),
+                                columns=['slope','intercept'])
+        ##print(temp_slope_intercept)
+        temp_data = pd.concat([temp_data,temp_slope_intercept],axis=1)
         temp_data.reset_index(inplace=True)
         temp_data.drop("index",axis=1,inplace=True)
 
         
         temp_data.reset_index(inplace=True)
+        ##print("WE ARE HERE!!!!!!!!!!!!!!!!!!!")
+        ##print(temp_data)
         # Compare all pairs of lines with the same starting point
         # If the angle is small keep the longest one
         angles = []
@@ -120,13 +141,13 @@ class Lines:
             
             for record in foo:
                 
-                # print(record)
+                # ##print(record)
                 if last_record:
                     angle = math.atan((last_record['slope']-record['slope'])/(1+last_record['slope']*record['slope']))
-                    # print(angle)
+                    # ##print(angle)
                     angles.append(angle)
                     # if ((-1*angle_threshold)<= angle) and (angle<= angle_threshold):
-                    # print(angle,angle_threshold)
+                    # ##print(angle,angle_threshold)
                     if (abs(angle)) >= abs(angle_threshold):
                         if last_record['days']>record['days']:
                             linesToKeep.append(last_record)
@@ -141,9 +162,14 @@ class Lines:
         
         new = pd.DataFrame(linesToKeep)
         new.drop_duplicates(inplace=True)
-        # print(new)
-        print("LINES TO KEEP:",len(new))
+        
+        ##print(new)
+        ##print(angles)
+        
+        ##print("LINES TO KEEP:",len(new))
         temp_data = new
+        
+
         if len(new)<=0:
             return temp_data
 
@@ -153,15 +179,20 @@ class Lines:
         except KeyError:
             temp_data.reset_index(inplace=True)
             pass
-        # print(temp_data)
+        # ##print(temp_data)
         # exit(-1)
         # temp_data.sort_values(by="Date",ascending=True,inplace=True)
         temp_data['Date'] = pd.to_datetime(temp_data['Date'], format='%Y%m%d', errors='ignore')
         temp_data['Date2'] = pd.to_datetime(temp_data['Date2'], format='%Y%m%d', errors='ignore')
+        ##print("\n\n\n\n\nFINISHED!!!")
         return temp_data#.to_dict(orient='list')
 
     def getLinesFromMax(self,df,angle_threshold=0.005,maxnlines=5):
+
         df.reset_index(inplace=True)
+        dates = df['Date']
+        dates=dates.reset_index()
+        ##print(dates)
 
         # Keep only pairs with local maximum
         df = df[df.xmax.notnull()]
@@ -198,8 +229,8 @@ class Lines:
             d1 = temp_data.Date.astype("datetime64").loc[i]
             d2 = temp_data.Date2.astype("datetime64").loc[i]
             maximum = np.max(df['Close'][(df['Date'].astype("datetime64")>=d1) & (df['Date'].astype("datetime64")<=d2)])
-            # print(maximum)
-            # print(d1,d2,maximum)
+            # ##print(maximum)
+            # ##print(d1,d2,maximum)
             temp_data["maximum"].loc[i] = maximum
 
         temp_data.dropna(inplace=True)
@@ -215,21 +246,38 @@ class Lines:
                                     how='inner')
         # rename and reset columns
         temp_data.columns = ["Date","Date2","xmax","xmax2","maximum","importance"]
-
         temp_data=temp_data.sort_values(by='importance',ascending=False)
 
         # use n of days to define the longest trends
         temp_data['days'] = temp_data['Date2'].astype("datetime64") - temp_data['Date'].astype("datetime64")
         
+        # Use date points instead of dates to calculate slopes
+        temp_data2 = temp_data.merge(dates,left_on='Date',right_on="Date",how="inner")
+        temp_data2.rename(columns={"index":"DateIndex"},inplace=True)
+        temp_data2 = temp_data2.merge(dates,left_on='Date2',right_on="Date",how="inner")
+        temp_data2.rename(columns={"index":"DateIndex2"},inplace=True)
+        temp_data2.drop('Date_y',axis=1,inplace=True)
+        temp_data2.rename(columns={'Date_x':'Date'},inplace=True)
+        temp_data=temp_data2
+        del temp_data2
+
+
+        
         # Find slope for each line
         temp_data.Date = temp_data.Date.astype("str")
         temp_data.Date2 = temp_data.Date2.astype("str")
-        temp_data['slope'] = temp_data.apply(lambda x: get_slope([x["Date"],x["Date2"]],[x['xmax'],x['xmax2']]),axis=1)
+        ##print(temp_data)
+        temp_slope_intercept= pd.DataFrame.from_records((temp_data.apply(lambda x: get_slope([x["DateIndex"],x["DateIndex2"]],[x['xmax'],x['xmax2']]),axis=1)),
+                                columns=['slope','intercept'])
+        ##print(temp_slope_intercept)
+        temp_data = pd.concat([temp_data,temp_slope_intercept],axis=1)
         temp_data.reset_index(inplace=True)
         temp_data.drop("index",axis=1,inplace=True)
 
         
         temp_data.reset_index(inplace=True)
+        ##print("WE ARE HERE!!!!!!!!!!!!!!!!!!! FOR DOWNTRENDS")
+        ##print(temp_data)
         # Compare all pairs of lines with the same starting point
         # If the angle is small keep the longest one
         angles = []
@@ -242,7 +290,7 @@ class Lines:
             last_record = None
             for record in foo:
                 
-                # print(record)
+                # ##print(record)
                 if last_record:
                     angle = math.atan((last_record['slope']-record['slope'])/(1+last_record['slope']*record['slope']))
                     
@@ -261,8 +309,8 @@ class Lines:
         
         new = pd.DataFrame(linesToKeep)
         new.drop_duplicates(inplace=True)
-        # print(new)
-        print("LINES TO KEEP:",len(new))
+        # ##print(new)
+        ##print("LINES TO KEEP:",len(new))
         temp_data = new
 
         if len(new)<=0:
@@ -278,10 +326,11 @@ class Lines:
 
         # temp_data.sort_values(by="Date",ascending=True,inplace=True)
         
-        # print(temp_data[temp_data['Date']>temp_data['Date2']])
+        # ##print(temp_data[temp_data['Date']>temp_data['Date2']])
         temp_data['Date'] = pd.to_datetime(temp_data['Date'], format='%Y%m%d', errors='ignore')
         temp_data['Date2'] = pd.to_datetime(temp_data['Date2'], format='%Y%m%d', errors='ignore')
-        # print(temp_data.info())
+        # ##print(temp_data.info())
+        ##print("\n\n\n\n\nFINISHED!!! Down Trends" )
         return temp_data#.to_dict(orient='list')
 
     def getMinMaxLine(self,df,n):
@@ -318,7 +367,8 @@ class Lines:
 
 
 
-        color = getSlopeColor(slope_max,slope_min)
+        # color = getSlopeColor(slope_max,slope_min)
+        color='red'
         
         
         return df,color,local_maxs,local_mins,slope
@@ -334,11 +384,11 @@ def to_integer(dt_time):
 
 def get_slope(dates,prices):
     try:
-        d1 = to_integer(datetime.strptime(dates[0],"%Y-%m-%d"))
-        d2= to_integer(datetime.strptime(dates[1],"%Y-%m-%d"))
-        dates=[d1,d2]
+        # d1 = to_integer(datetime.strptime(dates[0],"%Y-%m-%d"))
+        # d2= to_integer(datetime.strptime(dates[1],"%Y-%m-%d"))
+        # dates=[d1,d2]
         slope, intercept = np.polyfit(dates,prices,1)
-        return slope# ,intercept
+        return slope ,intercept
     except:
         return 0
 
