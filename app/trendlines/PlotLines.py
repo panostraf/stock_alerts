@@ -1,18 +1,18 @@
 from pandas.core.frame import DataFrame
-from trendlines.trends import *
+from app.trendlines.trends import *
 import plotly.express as px
 import matplotlib.pyplot as plt
 import datetime as dt
 import plotly.graph_objects as go
 import investpy as inv
-from data.get_data import get_data
+from app.data.get_data import get_data
 
 
 
 
 def main(symbol,n=3,
     minAngle=0.0005,
-    maxnLines=2):
+    maxnLines=1):
 
     df = get_data(str(symbol))
     original_df = df
@@ -37,12 +37,10 @@ def main(symbol,n=3,
 
 
     linesXmin = Lines().getLinesFromMin(df,angle_threshold=minAngle,maxnlines = maxnLines)
-    try:
-        linesXmax = Lines().getLinesFromMax(df,angle_threshold=minAngle,maxnlines = maxnLines)
-    except:
-        linesXmax = pd.DataFrame()
-    # #print(len(linesXmin))
-    # #print(len(linesXmax))
+    linesXmax = Lines().getLinesFromMax(df,angle_threshold=minAngle,maxnlines = maxnLines)
+    trend_dates = pd.concat([linesXmax[['Date2','slope','intercept','days']],linesXmin[['Date2','slope','intercept','days']]])
+    
+    
 
     # fig = px.line(df, x="Date", y="Close")
 
@@ -104,8 +102,21 @@ def main(symbol,n=3,
     )
     fig.update_layout(autosize=True)
     fig.update_layout(showlegend=False)
-    
-    return fig, last
+    std = round(df.Close.std(),2)
+
+
+    last_trend_date = trend_dates['Date2'].max()
+    last_trend = ""
+    last_slope = float(trend_dates[trend_dates['Date2'] ==last_trend_date].sort_values(by='days',ascending=False).head(1)['slope'])
+    print("LAST SLOPE",last_slope)
+
+    if last_slope < 0.01:
+        last_trend = "DownTrend"
+    elif last_trend > 0.01:
+        last_trend = "Uptrend"
+    else:
+        last_trend = "Neutral"
+    return fig, last, std, last_trend
 
 
 

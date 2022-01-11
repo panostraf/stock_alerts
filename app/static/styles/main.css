@@ -56,6 +56,11 @@
   nav{
     height:4rem;
   }
+
+  p[class=symbol-info]{
+    margin-bottom: 0px;
+    margin-top: 0px;
+  }
 @media  (max-width : 600px){
   /* div[id=navbarSupportedContent]{ */
     /* display: inline-block; */
