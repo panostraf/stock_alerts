@@ -9,4 +9,4 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 from app import routes
 
 
-app.run(debug=True)
+# app.run(debug=True)
