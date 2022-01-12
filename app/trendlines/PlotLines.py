@@ -116,7 +116,8 @@ def main(symbol,n=3,
         last_trend = "Uptrend"
     else:
         last_trend = "Neutral"
-    return fig, last, std, last_trend
+    original_df['Date'] = original_df['Date'].astype(str)
+    return fig, last, std, last_trend, original_df
 
 
 

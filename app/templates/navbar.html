@@ -1,70 +1,17 @@
 
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container-fluid">
-   
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <div class="dropdown-field">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Symbols
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item1" method="post" action="/results" name="ticker" href="/results/bitcoin">Bitcoin</a></li>
-                        <li><a class="dropdown-item2" method="post" action="/results" name="ticker" href="/results/binance coin">BNB</a></li>
-                        <li><a class="dropdown-item3" method="post" action="/results" name="ticker" href="/results/ethereum">Ethereum</a></li>  
-                        <li><a class="dropdown-item4" method="post" action="/results" name="ticker" href="/results/XRP">XRP</a></li>  
-                        <li><a class="dropdown-item5" method="post" action="/results" name="ticker" href="/results/litecoin">Litecoin</a></li>  
-                        <li><a class="dropdown-item6" method="post" action="/results" name="ticker" href="/results/dash">Dash</a></li>  
-                        <li><a class="dropdown-item7" method="post" action="/results" name="ticker" href="/results/cardano">Cardano</a></li>   
-                        <li><a class="dropdown-item8" method="post" action="/results" name="ticker" href="/results/stellar">Stellar</a></li>   
-                        <li><a class="dropdown-item9" method="post" action="/results" name="ticker" href="/results/TRON">TRON</a></li>   
-                        <li><a class="dropdown-item10" method="post" action="/results" name="ticker" href="/results/EOS">EOS</a></li>   
-                        <li><a class="dropdown-item11" method="post" action="/results" name="ticker" href="/results/IOTA">IOTA</a></li>  
-                        <li><a class="dropdown-item12" method="post" action="/results" name="ticker" href="/results/IOTA">Polkadot</a></li>  
-                         
-
-                        
-                        
-                    
-                    </ul>
-                </li>
-        </div>
-        <!-- {% include "currencies.html" %} -->
-        
-        <div class=search-field>
-            <form class="d-flex" action="/search_results" method="post">
-                <!-- <form action="/results" method="post"> -->
-                    <input class="form-control me-2" id="symbol" name="ticker" type="search" placeholder="Search" aria-label="Search">
-                    <button type="submit" class="search-button" >Search</button>
-            </form>
-        </div>
-    </div>
-      
-    
+<nav>
+<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+    <li><a class="dropdown-item1" method="post" action="/results" name="ticker" href="/results/bitcoin">Bitcoin</a></li>
+    <li><a class="dropdown-item2" method="post" action="/results" name="ticker" href="/results/binance coin">BNB</a></li>
+    <li><a class="dropdown-item3" method="post" action="/results" name="ticker" href="/results/ethereum">Ethereum</a></li>  
+    <li><a class="dropdown-item4" method="post" action="/results" name="ticker" href="/results/XRP">XRP</a></li>  
+    <li><a class="dropdown-item5" method="post" action="/results" name="ticker" href="/results/litecoin">Litecoin</a></li>  
+    <li><a class="dropdown-item6" method="post" action="/results" name="ticker" href="/results/dash">Dash</a></li>  
+    <li><a class="dropdown-item7" method="post" action="/results" name="ticker" href="/results/cardano">Cardano</a></li>   
+    <li><a class="dropdown-item8" method="post" action="/results" name="ticker" href="/results/stellar">Stellar</a></li>   
+    <li><a class="dropdown-item9" method="post" action="/results" name="ticker" href="/results/TRON">TRON</a></li>   
+    <li><a class="dropdown-item10" method="post" action="/results" name="ticker" href="/results/EOS">EOS</a></li>   
+    <li><a class="dropdown-item11" method="post" action="/results" name="ticker" href="/results/IOTA">IOTA</a></li>  
+    <li><a class="dropdown-item12" method="post" action="/results" name="ticker" href="/results/IOTA">Polkadot</a></li>  
+</ul>
 </nav>
-  
-
-
-    <!-- <head>
-        OLD NAVBAR
-        
-        <nav class=search-symbols id=symbol-search>
-            <div class=nav-options-block id=nav-block>
-                <h1 align-text='left'>Cryptocurrency Auto Technical Analysis</h1>
-                <form action="/results" method="post">
-                    <input type="text" id="symbol" name="ticker" placeholder="Select symbol">
-                    <p>or</p>
-                    <select name="tickerDropDown" method="POST" action="/" >
-                    
-                        {% for s in symbols %}
-                            <option value="{{s}}" SELECTED>{{s}}</option>"
-                        {% endfor %}
-                        <option value="" disabled selected>Select your option</option>
-                    </select>
-                    <button type="submit">Search</button>
-                </form>
-            </div>
-        </nav>
-    </head> -->

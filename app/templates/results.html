@@ -20,31 +20,75 @@
 
 
 <div id='chart' class='chart' ></div>
+<p id="demo">test </p>
+<!-- <div>
+    <canvas id="myChart"></canvas>
+  </div> -->
+  
+
+  <p>{{datajson}},a <span id="username"></span></p>
 
 
 
 
-<!-- <div id="parameters" class="paramSettings">
-    <form action="/resultsParams" method="post">
-        <input type="text" id="MaxNLines" name="nlines" placeholder="max number of lines ({{nlines}})">
-        <input type="text" id="Ncomponents" name="ncomponents" placeholder="n components {{ncomponents}}">
-        <input type="text" id="minAngle" name="min_angle" placeholder="min angle {{minangle}}">
-        <button type="submit">Set</button>
-    </form>
-</div> -->
-           
-            
+  <div>
+    <canvas id="myChart" width="200px" height="200px"></canvas>
+  </div> 
 
+
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+      var obj = JSON.parse('{{datajson | safe}}')
+    // document.getElementById("demo").innerHTML = obj.Close[0];
+    var dates = obj.Date
+    var prices = obj.Close
+    console.log(obj)
+
+
+    // const labels = [dates
+    // ];
+  
+    const data = {
+        datasets: [{
+      data: obj,
+    }],
+    
+      
+    };
+  
+    var config = {
+      type: 'line',
+      data: data,
+      options: {}
+    };
+  </script>
+  
+
+  <script>
+    const myChart = new Chart(
+      document.getElementById('myChart'),
+      config
+    );
+  </script> 
+  
+
+
+
+
+
+
+
+
+
+<!-- PLOTLY CHART!!! -->
 
 <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
 <script type='text/javascript'>
     var graphs = {{graphJSON | safe}};
-    const config = {
-   displayModeBar: false, // this is the line that hides the bar.
-   width:1080
-};
     
-    Plotly.plot('chart',graphs,config,{});
+    
+    Plotly.plot('chart',graphs,{});
 </script> 
 
 

@@ -1,6 +1,7 @@
 from flask import Flask
-from flask import render_template,request,session,url_for
+from flask import render_template,request,session,url_for,jsonify
 import investpy as inv
+from werkzeug import datastructures
 from app.trendlines  import *
 from app.trendlines import PlotLines as ptrends
 # from app.import trendlines.trends
@@ -32,12 +33,15 @@ def results(symbol):
     nlines = 20
     ncomponents = 4
     minangle = 0.005
-    fig,last,std,last_trend  = ptrends.main(str(symbol))
+    fig,last,std,last_trend,dfjson  = ptrends.main(str(symbol))
 
     graphJSON =  json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     # #print(graphJSON)
     # fig.write_image("static/imgs/fig1.jpeg")
     symbols = inv.crypto.get_cryptos()[:10]
+
+    datajson = dfjson[['Date','Close']].to_json(orient="records")
+    # print(dfjson.to_dict('columns'))
 
     return render_template("results.html",
                                 symbol=symbol,
@@ -47,34 +51,9 @@ def results(symbol):
                                 last = last,
                                 graphJSON=graphJSON,
                                 std=std,
-                                last_trend=last_trend
+                                last_trend=last_trend,
+                                datajson = datajson
                                 )
-
-@app.route("/search_results",methods=["GET","POST"])
-def search_results():
-    if request.method=="POST":
-        session['symbol'] = request.form['ticker']
-        if session['symbol'] == "":
-            session['symbol'] = request.form['tickerDropDown']
-        nlines = 20
-        ncomponents = 4
-        minangle = 0.005
-        fig,last  = trends.main(str(session['symbol']))
-        graphJSON =  json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-        # #print(graphJSON)
-        # fig.write_image("static/imgs/fig1.jpeg")
-        symbols = inv.crypto.get_cryptos()[:10]
-    
-
-    return render_template("results.html",
-                                symbol=session['symbol'],
-                                nlines=nlines,
-                                ncomponents=ncomponents,
-                                minangle=minangle,
-                                last = last,
-                                graphJSON=graphJSON,
-                                symbols=symbols["name"])
-    
 
 
 @app.route("/resultsParams",methods=["GET","POST"])

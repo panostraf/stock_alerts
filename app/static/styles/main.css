@@ -1,104 +1,75 @@
+/* 
+nav{
+  margin-top: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+} */
+
+head{
+  margin-top: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+body{
+  background-color:white;
+  margin-top: 0px;
+  margin-left: 0%;
+  margin-right: 0%;
+}
 
 
-  footer {
-    position:absolute;
-    /* bottom:0; */
-    width:100%;
-    height:60px;   /* Height of the footer */
-    /* background:#6cf; */
-  }
-  div.search-symbols{
-    display: inline;
-  }
+ul {
+  list-style-type:none;
+  margin: 0;
+  overflow:auto;
+  background-color: #333333;
+}
 
-  div.chart{
-    width:80%;
-    height:80%;
-    padding-left: 10%;
-    padding-right: 10%;
-    bottom: 10px;
-  } 
-  button.search-button{
-    display: inline-flex;
-  }
-  .navbar-collapse{display:flex!important;flex-basis:content}
+li {
+  float: left;
+}
 
-  input[name=ticker]{
-    display: inline-flex;
-  }
-  div.search-field{
-    width: auto;
-    display: inline-flex;
-    position: Absolute; 
-    right: 10px; 
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 16px;
+  text-decoration: none;
+}
 
-  }
+li a:hover {
+  background-color: #111111;
+} */
 
-  div.dropdown-field{
-    width: auto;
-    display: inline-flex;
-    position: Absolute; 
-    left: 10px; 
-  }
-  div.overview{
-    /* font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; */
-    text-align: center;
-    /* font-size: 14px; */
-  }
-  .navbar-hide {
-    pointer-events: none;
-    opacity: 0;
-  }
+footer {
 
-  /* nav{
-    
-  } */
-  nav{
-    height:4rem;
-  }
+  position:absolute;
+  /* bottom:0; */
+  width:100%;
+  height:60px;   /* Height of the footer */
+  background:#6cf; 
+}
 
-  p[class=symbol-info]{
-    margin-bottom: 0px;
-    margin-top: 0px;
-  }
+
+div.chart{
+  width:80%;
+  height:80%;
+  padding-left: 10%;
+  padding-right: 10%;
+  bottom: 10px;
+} 
+
+ canvas{
+   width: 100px;
+   height: 100px;
+ }
+
 @media  (max-width : 600px){
-  /* div[id=navbarSupportedContent]{ */
-    /* display: inline-block; */
-  /* } */
   body{
     background-color: cadetblue;
   }
-  nav{
-    height:4rem;
-  }
-  div.search-field{
-    display:list-item;
-    width: auto;
-    /* display: inline-block; */
-    /* position: Absolute;  */
-    /* right: 10px;  */
   
-  }
-  input[name=ticker]{
-    display: list-item;
-  }
-  
-  div.dropdown-field{
-    display:list-item;
-    width: auto;
-    /* display: inline-block; */
-    /* position: Absolute;  */
-    /* left: 10px;  */
-  }
-
-  div.dropdown-field{
-    width: auto;
-    display: block;
-    /* display: inline-flex; */
-    /* position: Absolute;  */
-    /* left: 10px;  */
-  }
-
 
   div.chart{
     width:98%;
@@ -109,31 +80,4 @@
   } 
 
  
-
-  footer {
-    position:absolute;
-
-    bottom:0;
-    width:100%;
-    height:5px;   /* Height of the footer */
-    /* background:#6cf; */
-  }
-
 }
-
-/* 
-div.paramSettings{
-  text-align: center;
-}
-
-input{
-  font-size:14px;
-}
-
-select{
-  font-size: 14px;
-}
-
-button{
-  font-size: 14px;
-} */
