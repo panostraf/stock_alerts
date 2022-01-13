@@ -48,7 +48,9 @@ def main(symbol,n=3,
     fig.add_trace(go.Scatter(x=df.Date, y=df.Close, name="Close",line = dict(color='royalblue', width=4),
     line_shape='linear'))
     
+    downtrends = {}
     if len(linesXmax.index>0):
+        
         linesXmax = linesXmax[['Date','Date2','xmax','xmax2']].to_dict('list')
         for i in range(len(linesXmax['Date'])):
             try:
@@ -57,6 +59,9 @@ def main(symbol,n=3,
                 point2 = [(dt.datetime.strptime(linesXmax['Date2'][i],'%Y-%m-%d').date()), linesXmax['xmax2'][i]]
                 x_values = [point1[0], point2[0]]
                 y_values = [point1[1], point2[1]]
+                
+                downtrends['Date'] = [d.strftime('%Y-%m-%d') for d in x_values]
+                downtrends['Close'] = y_values
                 # plt.plot(x_values,y_values)
                 # fig.add_trace(x=x_values,y=y_values)
                 fig.add_trace(go.Scatter(x=x_values, 
@@ -65,7 +70,11 @@ def main(symbol,n=3,
                                         line_shape='linear'))
             except KeyError:
                 pass
+    else:
+        downtrends['Date'] = ["2021-01-01"]
+        downtrends['Close'] = [0]
 
+    uptrends = {}
     if len(linesXmin.index>0):
         linesXmin = linesXmin[['Date','Date2','xmin','xmin2']].to_dict('list')
         for i in range(len(linesXmin['Date'])):
@@ -75,13 +84,18 @@ def main(symbol,n=3,
                 point2 = [(dt.datetime.strptime(linesXmin['Date2'][i],'%Y-%m-%d').date()), linesXmin['xmin2'][i]]
                 x_values = [point1[0], point2[0]]
                 y_values = [point1[1], point2[1]]
+                uptrends['Date'] = [d.strftime('%Y-%m-%d') for d in x_values]
+                uptrends['Close'] = y_values
                 fig.add_trace(go.Scatter(x=x_values, 
                                         y=y_values, 
                                         name=f"Uptrend - {str(i+1)}",
                                         line_shape='linear'))
             except KeyError:
                 pass
-    
+    else:
+        uptrends['Date'] = ["2021-01-01"]
+        uptrends['Close'] = [0]
+        
     fig = addLocalMinMaxLine(pd.DataFrame(df),fig,n=n)
 
     fig.update_layout(
@@ -116,8 +130,16 @@ def main(symbol,n=3,
         last_trend = "Uptrend"
     else:
         last_trend = "Neutral"
-    original_df['Date'] = original_df['Date'].astype(str)
-    return fig, last, std, last_trend, original_df
+    original_df['Date'] = original_df['Date'].apply(lambda x: x.strftime("%Y-%m-%d"))
+    print("\n\n\n")
+
+    print('uptrends')
+    print(uptrends)
+    print("downtrends:")
+    print(downtrends)
+
+    print("\n\n\n")
+    return fig, last, std, last_trend, original_df,uptrends,downtrends
 
 
 

@@ -10,86 +10,96 @@
 <title>{{symbol}}</title>
 
 
-<div class="overview" id='symbol-info'>
-    <p class="symbol-info">{{symbol}}</p>
-    <p class="symbol-info">{{last}}</p>
-    <p class="symbol-info">Last Trend: {{last_trend}}</p>
-    <p class="symbol-info">Expected Risk: {{std}}</p>
-    <hr>
+<div class="overview" id='symbol-info' padding-top='16px'>
+  <ul class = 'symbol-properties'>
+    <li class="symbol-info"><a class='symbols-i-info'>{{symbol}}</a></li>
+    <li class="symbol-info"><a class='symbols-i-info'>{{last}}</a></li>
+    <li class="symbol-info"><a class='symbols-i-info'>Last Trend: {{last_trend}}</a></li>
+    <li class="symbol-info"><a class='symbols-i-info'>Expected Risk: {{std}}</a></li>
+  </ul>
 </div>
 
 
-<div id='chart' class='chart' ></div>
-<p id="demo">test </p>
-<!-- <div>
-    <canvas id="myChart"></canvas>
-  </div> -->
-  
 
-  <p>{{datajson}},a <span id="username"></span></p>
+  <!-- <p font-color="white">{{datajson}} </p>
+  <p font-color="white">{{linesXmin}} </p>
+  <p font-color="white">{{linesXmax}} </p> -->
 
 
 
 
-  <div>
-    <canvas id="myChart" width="200px" height="200px"></canvas>
+  <div class='chart-container' width="200px" height="200px"></div>>
+    <canvas id="myChart" ></canvas>
   </div> 
+
+  <!-- <div class='chart-container2' width="200px" height="200px"></div>>
+    <canvas id="myChart2" ></canvas>
+  </div>  -->
 
 
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-      var obj = JSON.parse('{{datajson | safe}}')
-    // document.getElementById("demo").innerHTML = obj.Close[0];
-    var dates = obj.Date
-    var prices = obj.Close
-    console.log(obj)
+      var obj = JSON.parse('{{datajson | tojson | safe}}');
+      var dates = obj.Date;
+      var prices = obj.Close;
 
+      var objUp = JSON.parse('{{linesXmin | tojson | safe}}');
+    var objDown = JSON.parse('{{linesXmax | tojson | safe}}');
+    var downTrend = objDown.Close;
+    var UpTrend = objUp.Close;
 
-    // const labels = [dates
-    // ];
-  
-    const data = {
-        datasets: [{
-      data: obj,
-    }],
     
-      
+    
+    var s1 = {
+      label: 's1',
+      borderColor: 'red',
+      data: [
+        { x: objDown.Date[1], y: objDown.Close[1] },
+        { x: objDown.Date[0], y: objDown.Close[0] },
+      ]
     };
-  
-    var config = {
-      type: 'line',
-      data: data,
-      options: {}
-    };
-  </script>
-  
 
-  <script>
-    const myChart = new Chart(
-      document.getElementById('myChart'),
-      config
-    );
+    var s2 = {
+      label: 's2',
+      borderColor: 'green',
+      data: [
+        { x: objUp.Date[1], y: objUp.Close[1] },
+        { x: objUp.Date[0], y: objUp.Close[0] },
+      ]
+    };
+    
+      const data = {
+        labels: dates,
+          datasets: [{
+            // labels: dates,
+            label:'Coin Price',
+            
+            data: prices,
+            backgroundColor: 'white',
+            },s1,s2
+          ],
+        };
+  
+      var config = {
+        type: 'line',
+        data: data,
+        };
+
+      const myChart = new Chart(
+        document.getElementById('myChart'),
+        config
+      );
+
+
+ 
+    
   </script> 
   
 
 
 
 
-
-
-
-
-
-<!-- PLOTLY CHART!!! -->
-
-<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
-<script type='text/javascript'>
-    var graphs = {{graphJSON | safe}};
-    
-    
-    Plotly.plot('chart',graphs,{});
-</script> 
 
 
 

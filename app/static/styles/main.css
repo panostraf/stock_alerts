@@ -5,6 +5,12 @@ nav{
   margin-right: 0px;
 } */
 
+*{
+  margin:0;
+  padding:0;
+  box-sizing: border-box;
+}
+
 head{
   margin-top: 0px;
   margin-left: 0px;
@@ -12,14 +18,16 @@ head{
 }
 
 body{
-  background-color:white;
+  /* background-color:white; */
   margin-top: 0px;
   margin-left: 0%;
   margin-right: 0%;
+  background-color: #1f1d1d;
+  color :'white';
 }
 
 
-ul {
+ul.dropdown-menu {
   list-style-type:none;
   margin: 0;
   overflow:auto;
@@ -30,17 +38,29 @@ li {
   float: left;
 }
 
-li a {
+li a.dropdown-item {
   display: block;
   color: white;
   text-align: center;
   padding: 16px;
   text-decoration: none;
+  justify-content: left;
+  
 }
 
-li a:hover {
-  background-color: #111111;
+li a.dropdown-item:hover {
+  background-color: #d3770e;
 } */
+
+li a.dropdown-item {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 26px;
+  text-decoration: none;
+  justify-content: left;
+  
+}
 
 footer {
 
@@ -57,12 +77,18 @@ div.chart{
   height:80%;
   padding-left: 10%;
   padding-right: 10%;
+  padding-top: 10%;
   bottom: 10px;
+  box-sizing: content-box;
 } 
 
+.chart-container{
+  position: relative;
+}
  canvas{
-   width: 100px;
-   height: 100px;
+   /* width: 100px;
+   height: 100px; */
+   background-color: 1f1d1d;
  }
 
 @media  (max-width : 600px){
