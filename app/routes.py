@@ -30,6 +30,16 @@ def home():
                             symbols=symbols["name"])
 
 
+@app.route('/test',methods=['GET','POST'])
+@app.route('/test/<user>')
+def test(user=None):
+    return render_template('testcss.html',user=user)
+
+
+
+
+
+
 @app.route("/results/<symbol>",methods=["GET","POST"])
 def results(symbol):
     

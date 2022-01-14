@@ -41,58 +41,74 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
       var obj = JSON.parse('{{datajson | tojson | safe}}');
-      var dates = obj.Date;
-      var prices = obj.Close;
-
       var objUp = JSON.parse('{{linesXmin | tojson | safe}}');
-    var objDown = JSON.parse('{{linesXmax | tojson | safe}}');
-    var downTrend = objDown.Close;
-    var UpTrend = objUp.Close;
+      var objDown = JSON.parse('{{linesXmax | tojson | safe}}');
+      var dates = obj.Date;
+      var prices = obj.Close;   
+      var downTrend = objDown.Close;
+      var UpTrend = objUp.Close;
 
-    
-    
-    var s1 = {
-      label: 's1',
-      borderColor: 'red',
-      data: [
-        { x: objDown.Date[1], y: objDown.Close[1] },
-        { x: objDown.Date[0], y: objDown.Close[0] },
-      ]
-    };
+      var downtrend_data = {
+        label: 'Down Trend',
+        borderColor: 'red',
+        data: [
+          { x: objDown.Date[1], y: objDown.Close[1] },
+          { x: objDown.Date[0], y: objDown.Close[0] },
+        ]
+      };
 
-    var s2 = {
-      label: 's2',
-      borderColor: 'green',
-      data: [
-        { x: objUp.Date[1], y: objUp.Close[1] },
-        { x: objUp.Date[0], y: objUp.Close[0] },
-      ]
-    };
-    
+      var uptrend_data = {
+        label: 'Up Trend',
+        borderColor: 'green',
+        data: [
+          { x: objUp.Date[1], y: objUp.Close[1] },
+          { x: objUp.Date[0], y: objUp.Close[0] },
+        ]
+      };
+
       const data = {
         labels: dates,
           datasets: [{
             // labels: dates,
+            type:'line',
             label:'Coin Price',
-            
             data: prices,
-            backgroundColor: 'white',
-            },s1,s2
+            fill: false,
+            borderColor: "#FFFFFF",
+            // borderDash: [5, 5],
+            backgroundColor: "#FFFFFF",
+            pointBackgroundColor: "#FFFFFF",
+            pointBorderColor: "#FFFFFF",
+            pointHoverBackgroundColor: "#FFFFFF",
+            pointHoverBorderColor: "#FFFFFF",
+            pointRadius: 1,
+            pointHoverRadius: 20
+
+
+            },downtrend_data,uptrend_data
           ],
         };
-  
+
       var config = {
         type: 'line',
         data: data,
+        options:{
+          scales:{
+            xAxes: [{
+                type: 'time',
+                ticks: {
+                    autoSkip: true,
+                    maxTicksLimit: 8
+                }
+            }]
+          }
+        }
         };
 
       const myChart = new Chart(
         document.getElementById('myChart'),
         config
       );
-
-
- 
     
   </script> 
   

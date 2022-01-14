@@ -88,7 +88,7 @@ div.chart{
  canvas{
    /* width: 100px;
    height: 100px; */
-   background-color: 1f1d1d;
+   background-color: #1f1d1d;
  }
 
 @media  (max-width : 600px){
