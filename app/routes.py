@@ -30,13 +30,6 @@ def home():
                             symbols=symbols["name"])
 
 
-@app.route('/test',methods=['GET','POST'])
-@app.route('/test/<user>')
-def test(user=None):
-    return render_template('testcss.html',user=user)
-
-
-
 
 
 
@@ -46,11 +39,7 @@ def results(symbol):
     nlines = 20
     ncomponents = 4
     minangle = 0.005
-    fig,last,std,last_trend,dfjson ,uptrends,downtrends = ptrends.main(str(symbol))
-    
-
-    graphJSON =  json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-
+    last,std,last_trend,dfjson ,uptrends,downtrends = ptrends.main(str(symbol))
     datajson = dfjson[['Date','Close']].to_dict(orient='list')
 
     return render_template("results.html",
@@ -59,7 +48,6 @@ def results(symbol):
                                 ncomponents=ncomponents,
                                 minangle=minangle,
                                 last = last,
-                                graphJSON=graphJSON,
                                 std=std,
                                 last_trend=last_trend,
                                 datajson = datajson,
@@ -68,59 +56,3 @@ def results(symbol):
 
 
 
-# @app.route("/resultsParams",methods=["GET","POST"])
-# def trendParams():
-#     if request.method=="POST":
-#         minangle = request.form['min_angle']
-#         ncomponents = request.form['ncomponents']
-#         nlines = request.form['nlines']
-        
-#         try:
-#             nlines = int(nlines)
-#             #print(nlines)
-#         except ValueError:
-#             #print("error")
-#             nlines = 20
-#             # session.pop('nlines')
-        
-#         try:
-#             ncomponents = int(ncomponents)
-#             #print(ncomponents)
-#         except ValueError:
-#             #print("error")
-#             ncomponents = 4
-#             # session.pop('ncomponents')
-
-#         try:
-#             minangle = float(minangle)
-#             #print(minangle)
-#         except ValueError:
-#             #print("error")
-#             minangle = 0.005
-#             # session.pop('min_angle')
-            
-
-
-#         # ncomponents = int(ncomponents)
-#         # minangle = float(minangle)
-#         #print("\n\n\n\n")
-#         #print("nlines",nlines,"type",type(nlines))
-
-#         fig, last = trends.main(str(session['symbol']),maxnLines=nlines,n=ncomponents,minAngle=minangle)
-#         graphJSON =  json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-#         #print(minangle,nlines,ncomponents)
-#         # fig.write_image("static/imgs/fig1.jpeg")
-#         fig.config()
-#         symbols = inv.crypto.get_cryptos()[:10]
-#     return render_template("results.html",
-#                             symbol=session['symbol'],
-#                             nlines=nlines,
-#                             ncomponents=ncomponents,
-#                             minangle=minangle,
-#                             last = last,
-#                             graphJSON=graphJSON,
-#                             symbols=symbols["name"])
-
-
-if __name__=='__main__':
-    app.run(debug=True,host="0.0.0.0",port="8080") 

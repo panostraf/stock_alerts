@@ -5,11 +5,11 @@ nav{
   margin-right: 0px;
 } */
 
-*{
+/* *{
   margin:0;
   padding:0;
   box-sizing: border-box;
-}
+} */
 
 head{
   margin-top: 0px;
@@ -24,6 +24,30 @@ body{
   margin-right: 0%;
   background-color: #1f1d1d;
   color :'white';
+  /* display: flex; */
+}
+.block-content-graph{
+  display: flexbox;
+}
+
+ul.symbol-properties{
+  display: inline-block;
+  list-style-type:none;
+}
+li.symbol-info {
+  float: left;
+}
+
+li.symbol-info a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 16px;
+  text-decoration: none;
+}
+
+li.symbol-info a:hover {
+  color: #d3770e;
 }
 
 
@@ -62,7 +86,38 @@ li a.dropdown-item {
   
 }
 
-footer {
+
+
+/* a.symbols-i-info{
+  color:#d3770e;
+} */
+
+
+
+
+
+.chart-container{
+  
+  /* display: flex; */
+  position: relative;
+  /* width: 500px;;
+  padding-right: 20px; */
+  /* height: 100vh; */
+  /* padding-top: 0; */
+}
+ canvas{
+  height: 50vh; 
+  width: 90%; 
+  display: block;
+  padding-right: 5%;
+  padding-left: 2%;
+   background-color: #1f1d1d;
+   
+   /* width: 90%;
+   height: 90%; */
+ }
+
+ footer {
 
   position:absolute;
   /* bottom:0; */
@@ -71,26 +126,7 @@ footer {
   /* background:#6cf;  */
 }
 
-
-div.chart{
-  width:80%;
-  height:80%;
-  padding-left: 10%;
-  padding-right: 10%;
-  padding-top: 10%;
-  bottom: 10px;
-  box-sizing: content-box;
-} 
-
-.chart-container{
-  position: relative;
-}
- canvas{
-   /* width: 100px;
-   height: 100px; */
-   background-color: #1f1d1d;
- }
-
+ 
 @media  (max-width : 600px){
   body{
     background-color:  #333333;

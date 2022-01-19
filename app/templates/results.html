@@ -1,17 +1,11 @@
 
 {% extends 'index.html' %}
 {% block content %}
-            
 
-
-
-<!-- <meta charset="UTF-8">
-<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main.css') }}"> -->
 <title>{{symbol}}</title>
 
-
-<div class="overview" id='symbol-info' padding-top='16px'>
-  <ul class = 'symbol-properties'>
+<div class="overview" id='symbol-info'>
+  <ul class ='symbol-properties'>
     <li class="symbol-info"><a class='symbols-i-info'>{{symbol}}</a></li>
     <li class="symbol-info"><a class='symbols-i-info'>{{last}}</a></li>
     <li class="symbol-info"><a class='symbols-i-info'>Last Trend: {{last_trend}}</a></li>
@@ -21,20 +15,9 @@
 
 
 
-  <!-- <p font-color="white">{{datajson}} </p>
-  <p font-color="white">{{linesXmin}} </p>
-  <p font-color="white">{{linesXmax}} </p> -->
-
-
-
-
-  <div class='chart-container' width="200px" height="200px"></div>>
+  <div class='chart-container'></div>
     <canvas id="myChart" ></canvas>
   </div> 
-
-  <!-- <div class='chart-container2' width="200px" height="200px"></div>>
-    <canvas id="myChart2" ></canvas>
-  </div>  -->
 
 
 
@@ -47,6 +30,24 @@
       var prices = obj.Close;   
       var downTrend = objDown.Close;
       var UpTrend = objUp.Close;
+
+      var symboldata = {
+            // labels: dates,
+            type:'line',
+            label:'Coin Price',
+            data: prices,
+            fill: false,
+            borderColor: "#FFFFFF",
+            // borderDash: [5, 5],
+            backgroundColor: "#FFFFFF",
+            pointBackgroundColor: "#FFFFFF",
+            pointBorderColor: "#FFFFFF",
+            pointHoverBackgroundColor: "#FFFFFF",
+            pointHoverBorderColor: "#FFFFFF",
+            pointRadius: 1,
+            pointHoverRadius: 4
+
+      };
 
       var downtrend_data = {
         label: 'Down Trend',
@@ -68,41 +69,46 @@
 
       const data = {
         labels: dates,
-          datasets: [{
-            // labels: dates,
-            type:'line',
-            label:'Coin Price',
-            data: prices,
-            fill: false,
-            borderColor: "#FFFFFF",
-            // borderDash: [5, 5],
-            backgroundColor: "#FFFFFF",
-            pointBackgroundColor: "#FFFFFF",
-            pointBorderColor: "#FFFFFF",
-            pointHoverBackgroundColor: "#FFFFFF",
-            pointHoverBorderColor: "#FFFFFF",
-            pointRadius: 1,
-            pointHoverRadius: 20
-
-
-            },downtrend_data,uptrend_data
-          ],
+          // datasets: [symboldata,downtrend_data,uptrend_data
+          // ],
+          datasets: [symboldata]
         };
 
       var config = {
+        labels :dates,
         type: 'line',
         data: data,
         options:{
-          scales:{
-            xAxes: [{
-                type: 'time',
+          responsive:false,
+          options:{
+            sclaes:{
+              xAxes: [{
                 ticks: {
                     autoSkip: true,
-                    maxTicksLimit: 8
-                }
-            }]
+                    maxTicksLimit: 50
+                        }
+                    }]
+              ,
+              yAxes: [{
+
+            	ticks: {
+                	beginAtZero: true
+            	}
+        	        }]
+            }
           }
         }
+        // options:{
+        //   scales:{
+        //     xAxes: [{
+        //         type: 'timeseries',
+        //         ticks: {
+        //             autoSkip: true,
+        //             // maxTicksLimit: 5
+        //         }
+        //     }]
+        //   }
+        // }
         };
 
       const myChart = new Chart(
@@ -116,30 +122,4 @@
 
 
 
-
-
-
 {% endblock %}
-
-
-
-
-
-<!-- 
-
-
-
-
-
-
-
-
-
-
- Auto reload page on window resize -->
-<!-- <script> 
-window.addEventListener('resize', function () { 
-    // "use strict";
-    window.location.reload('/results'); 
-});
-</script> -->
